@@ -4,21 +4,23 @@ import colors from "../../config/colors";
 export const Container = styled.div`
   .wrapper {
     @media (min-width: 768px) {
-      margin-right: 110px;
+      margin-left: 10px;
     }
     @media (min-width: 1024px) {
-      margin-right: 290px;
-    }
-    @media (min-width: 1200px) {
-      margin-right: 530px;
-    }
-    @media (min-width: 1440px) {
-      margin-right: 580px;
+      margin-right: 0px;
     }
   }
   .section1 {
     display: flex;
     flex-direction: column;
+    #search-fields {
+      display: flex;
+      flex-direction: column;
+
+      @media (min-width: 768px) {
+        flex-direction: row;
+      }
+    }
     .search-tags {
       display: flex;
       align-items: center;
@@ -33,6 +35,8 @@ export const Container = styled.div`
     }
     @media (min-width: 768px) {
       flex-direction: row;
+      justify-content: space-between;
+      width: 72vw;
     }
   }
   @media (min-width: 768px) {
@@ -76,4 +80,29 @@ export const Checkbox = styled.input`
   background-color: ${colors.darkerWhite};
   border: 1px solid ${colors.darkestWhite};
   margin-left: 20px;
+`;
+
+export const StyledAddButton = styled.button`
+  width: 154px;
+  height: 50px;
+  border-radius: 5px;
+  background-color: ${colors.red};
+  outline: 0 none;
+  color: ${colors.white};
+  margin: 20px 0px 20px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+
+  span {
+    font-size: 24px;
+    font-weight: 700;
+    margin-right: 5px;
+  }
+
+  @media (min-width: 768px) {
+    width: 100px;
+  }
 `;
