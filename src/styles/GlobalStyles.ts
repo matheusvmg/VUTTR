@@ -14,6 +14,8 @@ const GlobalStyle = createGlobalStyle`
         line-height: 26px;
         background-color: ${colors.darkestWhite};
         font-weight: 400;
+        max-width: 100%;
+        overflow-x: hidden;
     }
     
     h1 {
@@ -42,6 +44,12 @@ const GlobalStyle = createGlobalStyle`
         outline: 0 none;
         border: 0px;
         border-radius: 5px;
+    }
+
+    input {
+        border-radius: 5px;
+        outline: 0 none;
+        border: 0px;
     }
 `;
 
