@@ -9,9 +9,21 @@ export const Container = styled.div`
   border: 1px solid ${colors.darkestWhite};
   box-shadow: 0px 20px 25px #0000001a;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
   margin: 20px;
+  padding: 20px;
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+
+    #title {
+      font-size: 24px;
+      font-weight: 700;
+      color: #170c3a;
+    }
+  }
 
   @media (min-width: 374px) {
     width: 89vw;
@@ -27,4 +39,29 @@ export const Container = styled.div`
   @media (min-width: 1200px) {
     width: 70vw;
   }
+`;
+
+export const StyledRemoveButton = styled.button`
+  outline: 0 none;
+  border: 0px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 14px;
+  color: ${colors.red};
+  font-weight: 700;
+
+  span {
+    font-size: 20px;
+    font-weight: 700;
+    color: ${colors.red};
+    margin-right: 5px;
+  }
+`;
+
+export const Description = styled.p`
+  margin-top: 20px;
+`;
+
+export const Tags = styled.p`
+  margin-top: 20px;
 `;
