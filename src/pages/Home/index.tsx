@@ -4,12 +4,15 @@ import TitleSubtitle from "../../components/TitleSubtitle";
 import { Container, Search, Checkbox, StyledAddButton } from "./styles";
 import CardTool from "../../components/CardTool";
 // import Loading from "../../components/Loading";
+import RemoveModal from "../../components/RemoveModal";
+import { useModal } from "../../hooks/useModal";
 
 const Home = () => {
   const titleProps = {
     title: "vuttr",
     subtitle: "Very Useful Tools to Remember",
   };
+  const { showModal, setShowModal } = useModal();
 
   const SearchInput = () => {
     return (
@@ -22,7 +25,7 @@ const Home = () => {
   const AddButton = () => {
     return (
       <>
-        <StyledAddButton type="button">
+        <StyledAddButton type="button" onClick={() => {}}>
           <span>+</span> Add
         </StyledAddButton>
       </>
@@ -46,7 +49,8 @@ const Home = () => {
         </div>
       </div>
 
-      <CardTool />
+      <CardTool show={setShowModal} />
+      {showModal ? <RemoveModal show={setShowModal} /> : null}
     </Container>
   );
 };
