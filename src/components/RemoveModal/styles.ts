@@ -15,7 +15,7 @@ export const Background = styled.div`
 
 export const Modal = styled.div`
   width: 87vw;
-  height: 250px;
+  height: 230px;
   background-color: ${colors.mostDarkesWhite};
   border-radius: 5px;
   padding: 30px;
