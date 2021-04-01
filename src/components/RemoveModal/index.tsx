@@ -13,8 +13,8 @@ interface RemoveModalProperty {
 
 const RemoveModal: React.FC<RemoveModalProperty> = ({ show }) => {
   return (
-    <Background>
-      <Modal>
+    <Background onClick={() => show(false)}>
+      <Modal onClick={(e) => e.stopPropagation()}>
         <div id="header">
           <span>x</span>
           <h4>Remove tool</h4>
