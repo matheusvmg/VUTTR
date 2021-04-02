@@ -11,6 +11,9 @@ const rotate = keyframes`
 
 export const Spinner = styled.div`
   margin: 50px 0px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   img {
     height: 30px;
     width: 30px;
