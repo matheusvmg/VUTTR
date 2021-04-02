@@ -3,23 +3,38 @@ import { Container, StyledRemoveButton, Description, Tags } from "./styles";
 
 interface ToolProperty {
   show: Function;
+  title: string;
+  description: string;
+  tags: [];
 }
 
-const CardTool: React.FC<ToolProperty> = ({ show }) => {
+const CardTool: React.FC<ToolProperty> = ({
+  show,
+  title,
+  description,
+  tags,
+}) => {
+  const tagsFormatted = (tagsArray: Array<string>) => {
+    const newTagsArrayFormatted = tagsArray.map((tag) => {
+      return tag.padStart(tag.length + 1, "#");
+    });
+    console.log(newTagsArrayFormatted);
+    return newTagsArrayFormatted.join("\n");
+  };
+
   return (
     <Container>
       <div className="header">
         <a href="/details" target="_blank" id="title">
-          Notion
+          {title}
         </a>
         <StyledRemoveButton type="button" onClick={() => show(true)}>
           <span>x</span>remove
         </StyledRemoveButton>
       </div>
-      <Description>
-        One tool for your whole team. Write, plan, and get organized.
-      </Description>
-      <Tags>#notion</Tags>
+      <Description>{description}</Description>
+
+      <Tags>{tagsFormatted(tags)}</Tags>
     </Container>
   );
 };

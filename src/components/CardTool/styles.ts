@@ -3,7 +3,7 @@ import colors from "../../config/colors";
 
 export const Container = styled.div`
   width: 87vw;
-  height: 283px;
+  height: auto;
   border-radius: 5px;
   background-color: ${colors.white};
   border: 1px solid ${colors.darkestWhite};
@@ -12,6 +12,7 @@ export const Container = styled.div`
   flex-direction: column;
   margin: 20px;
   padding: 20px;
+  overflow: hidden;
 
   .header {
     display: flex;
@@ -31,7 +32,6 @@ export const Container = styled.div`
   @media (min-width: 768px) {
     margin-left: 50px;
     width: 70vw;
-    height: 170px;
   }
   @media (min-width: 1024px) {
     width: 70vw;
@@ -60,8 +60,12 @@ export const StyledRemoveButton = styled.button`
 
 export const Description = styled.p`
   margin-top: 20px;
+  color: ${colors.lightInk};
 `;
 
 export const Tags = styled.p`
   margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  color: ${colors.red};
 `;

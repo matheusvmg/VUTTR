@@ -1,12 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import NavBar from "../../components/NavBar";
 import TitleSubtitle from "../../components/TitleSubtitle";
 import { Container, Search, Checkbox, StyledAddButton } from "./styles";
 import CardTool from "../../components/CardTool";
-// import Loading from "../../components/Loading";
+import Loading from "../../components/Loading";
 import RemoveModal from "../../components/RemoveModal";
 import { useModal } from "../../hooks/useModal";
 import AddModal from "../../components/AddModal";
+import getTools from "../../services/getTools";
+
+interface CardToolsProperty {
+  id: number;
+  title: string;
+  description: string;
+  tags: [];
+}
 
 const Home = () => {
   const titleProps = {
@@ -15,6 +23,8 @@ const Home = () => {
   };
   const { showModal, setShowModal } = useModal();
   const { showModal: addShowModal, setShowModal: setAddShowModal } = useModal();
+  const [tools, setTools]: Array<any> = useState([]);
+
   const SearchInput = () => {
     return (
       <>
@@ -33,6 +43,14 @@ const Home = () => {
     );
   };
 
+  useEffect(() => {
+    async function getAllTools() {
+      const data = await getTools();
+      setTools(data.data);
+    }
+    getAllTools();
+  }, []);
+
   return (
     <Container>
       <NavBar />
@@ -49,8 +67,19 @@ const Home = () => {
           <AddButton />
         </div>
       </div>
-
-      <CardTool show={setShowModal} />
+      {tools.length < 1 ? (
+        <Loading />
+      ) : (
+        tools.map(({ id, title, description, tags }: CardToolsProperty) => (
+          <CardTool
+            key={id}
+            show={setShowModal}
+            title={title}
+            description={description}
+            tags={tags}
+          />
+        ))
+      )}
       {showModal ? <RemoveModal show={setShowModal} /> : null}
       {addShowModal ? <AddModal show={setShowModal} /> : null}
     </Container>
