@@ -1,10 +1,17 @@
 import React from "react";
+import { Background } from "./styles";
 
-const AddModal = () => {
+interface AddModalProperty {
+  show: Function;
+}
+
+const AddModal: React.FC<AddModalProperty> = ({ show }) => {
   return (
-    <>
-      <h1>AddModal</h1>
-    </>
+    <Background
+      onClick={() => {
+        show(false);
+      }}
+    ></Background>
   );
 };
 

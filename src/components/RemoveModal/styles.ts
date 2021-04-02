@@ -3,7 +3,7 @@ import colors from "../../config/colors";
 
 export const Background = styled.div`
   background: rgba(0, 0, 0, 0.8);
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   height: 100%;

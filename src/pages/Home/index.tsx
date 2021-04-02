@@ -6,6 +6,7 @@ import CardTool from "../../components/CardTool";
 // import Loading from "../../components/Loading";
 import RemoveModal from "../../components/RemoveModal";
 import { useModal } from "../../hooks/useModal";
+import AddModal from "../../components/AddModal";
 
 const Home = () => {
   const titleProps = {
@@ -13,7 +14,7 @@ const Home = () => {
     subtitle: "Very Useful Tools to Remember",
   };
   const { showModal, setShowModal } = useModal();
-
+  const { showModal: addShowModal, setShowModal: setAddShowModal } = useModal();
   const SearchInput = () => {
     return (
       <>
@@ -25,7 +26,7 @@ const Home = () => {
   const AddButton = () => {
     return (
       <>
-        <StyledAddButton type="button" onClick={() => {}}>
+        <StyledAddButton type="button" onClick={() => setAddShowModal(true)}>
           <span>+</span> Add
         </StyledAddButton>
       </>
@@ -51,6 +52,7 @@ const Home = () => {
 
       <CardTool show={setShowModal} />
       {showModal ? <RemoveModal show={setShowModal} /> : null}
+      {addShowModal ? <AddModal show={setShowModal} /> : null}
     </Container>
   );
 };
