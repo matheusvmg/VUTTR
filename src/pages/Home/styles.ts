@@ -52,6 +52,7 @@ export const Search = styled.input`
   width: 87vw;
   background-color: ${colors.darkerWhite};
   border: 1px solid ${colors.darkestWhite};
+  padding: 20px;
   &::-webkit-input-placeholder {
     padding-left: 30px;
     background-image: url("/images/icons/Icon-Search-2px.svg");
