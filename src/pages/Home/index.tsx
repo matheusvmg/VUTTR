@@ -53,7 +53,6 @@ const Home = () => {
     }
     getAllTools();
   }, []);
-  console.log(showModal);
   return (
     <Container>
       <NavBar />
