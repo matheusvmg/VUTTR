@@ -20,12 +20,15 @@ const RemoveModal: React.FC<RemoveModalProperty> = ({
   toolTitle,
 }) => {
   async function removeSpecificTool() {
-    const response = await removeTool(toolId);
-    if (response.status === 200) {
-      show(false);
-      window.location.reload();
+    try {
+      const response = await removeTool(toolId);
+      if (response.status === 200) {
+        show(false);
+        window.location.reload();
+      }
+    } catch (err) {
+      console.error(err);
     }
-    return;
   }
 
   return (
