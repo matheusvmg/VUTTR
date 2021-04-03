@@ -4,10 +4,11 @@ import TitleSubtitle from "../../components/TitleSubtitle";
 import { Container, Search, Checkbox, StyledAddButton } from "./styles";
 import CardTool from "../../components/CardTool";
 import Loading from "../../components/Loading";
-import RemoveModal from "../../components/RemoveModal";
+
 import { useModal } from "../../hooks/useModal";
 import AddModal from "../../components/AddModal";
 import getTools from "../../services/getTools";
+import RemoveModal from "../../components/RemoveModal";
 
 interface CardToolsProperty {
   id: number;
@@ -24,6 +25,8 @@ const Home = () => {
   const { showModal, setShowModal } = useModal();
   const { showModal: addShowModal, setShowModal: setAddShowModal } = useModal();
   const [tools, setTools]: Array<any> = useState([]);
+  const [idTool, setIdTool]: any = useState(null);
+  const [toolTitle, setToolTitle]: any = useState("");
 
   const SearchInput = () => {
     return (
@@ -50,7 +53,7 @@ const Home = () => {
     }
     getAllTools();
   }, []);
-
+  console.log(showModal);
   return (
     <Container>
       <NavBar />
@@ -73,15 +76,23 @@ const Home = () => {
         tools.map(({ id, title, description, tags }: CardToolsProperty) => (
           <CardTool
             key={id}
+            id={id}
             show={setShowModal}
             title={title}
             description={description}
             tags={tags}
+            modalInfos={{ setIdTool, setToolTitle }}
           />
         ))
       )}
-      {showModal ? <RemoveModal show={setShowModal} /> : null}
-      {addShowModal ? <AddModal show={setShowModal} /> : null}
+      {addShowModal && <AddModal show={setAddShowModal} />}
+      {showModal && (
+        <RemoveModal
+          show={setShowModal}
+          toolId={idTool}
+          toolTitle={toolTitle}
+        />
+      )}
     </Container>
   );
 };
