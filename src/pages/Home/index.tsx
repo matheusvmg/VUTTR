@@ -10,6 +10,7 @@ import AddModal from "../../components/AddModal";
 import getTools from "../../services/getTools";
 import RemoveModal from "../../components/RemoveModal";
 import searchGlobally from "../../services/searchGlobally";
+import searchByTags from "../../services/searchByTags";
 import EmptyTools from "../../components/EmptyTools";
 
 interface CardToolsProperty {
@@ -34,14 +35,29 @@ const Home = () => {
   const inputSearch = useRef<HTMLInputElement>(null);
   const [isSearching, setIsSearching] = useState<Boolean>(false);
   const [isLoading, setIsLoading] = useState<Boolean>(true);
+  const inputTag = useRef<HTMLInputElement>(null);
+  const [isSeachTagsChecked, setIsSeachTagsChecked] = useState<boolean>(false);
+  console.log(isSeachTagsChecked);
 
   async function searchTools() {
-    try {
+    async function generalSearch() {
       const word =
         inputSearch.current !== null ? inputSearch.current.value : null;
       const response = await searchGlobally(word);
       setFilteredTools(response.data);
       setIsSearching(true);
+    }
+
+    async function searchInTagsOnly() {
+      const tag =
+        inputSearch.current !== null ? inputSearch.current.value : null;
+      const response = await searchByTags(tag);
+      setFilteredTools(response.data);
+      setIsSearching(true);
+    }
+
+    try {
+      isSeachTagsChecked ? searchInTagsOnly() : generalSearch();
     } catch (err) {
       console.error(err);
     }
@@ -127,7 +143,12 @@ const Home = () => {
           <div id="search-fields">
             <SearchInput />
             <div className="search-tags">
-              <Checkbox type="checkbox" />
+              <Checkbox
+                type="checkbox"
+                ref={inputTag}
+                checked={isSeachTagsChecked}
+                onChange={() => setIsSeachTagsChecked(!isSeachTagsChecked)}
+              />
               <p>search in tags only</p>
             </div>
           </div>
