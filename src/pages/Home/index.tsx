@@ -4,12 +4,13 @@ import TitleSubtitle from "../../components/TitleSubtitle";
 import { Container, Search, Checkbox, StyledAddButton } from "./styles";
 import CardTool from "../../components/CardTool";
 import Loading from "../../components/Loading";
-
+import EmptyFilteredTools from "../../components/EmptyFilteredTools";
 import { useModal } from "../../hooks/useModal";
 import AddModal from "../../components/AddModal";
 import getTools from "../../services/getTools";
 import RemoveModal from "../../components/RemoveModal";
 import searchGlobally from "../../services/searchGlobally";
+import EmptyTools from "../../components/EmptyTools";
 
 interface CardToolsProperty {
   id: number;
@@ -31,6 +32,8 @@ const Home = () => {
   const [toolTitle, setToolTitle]: any = useState("");
   const [filteredTools, setFilteredTools]: Array<any> = useState([]);
   const inputSearch = useRef<HTMLInputElement>(null);
+  const [isSearching, setIsSearching] = useState<Boolean>(false);
+  const [isLoading, setIsLoading] = useState<Boolean>(true);
 
   async function searchTools() {
     try {
@@ -38,6 +41,7 @@ const Home = () => {
         inputSearch.current !== null ? inputSearch.current.value : null;
       const response = await searchGlobally(word);
       setFilteredTools(response.data);
+      setIsSearching(true);
     } catch (err) {
       console.error(err);
     }
@@ -45,25 +49,65 @@ const Home = () => {
 
   const SearchInput = () => {
     return (
-      <>
-        <Search
-          type="text"
-          placeholder="search"
-          ref={inputSearch}
-          onBlur={() => searchTools()}
-        />
-      </>
+      <Search
+        type="text"
+        placeholder="search"
+        ref={inputSearch}
+        onBlur={() => searchTools()}
+      />
     );
   };
 
   const AddButton = () => {
     return (
-      <>
-        <StyledAddButton type="button" onClick={() => setAddShowModal(true)}>
-          <span>+</span> Add
-        </StyledAddButton>
-      </>
+      <StyledAddButton type="button" onClick={() => setAddShowModal(true)}>
+        <span>+</span> Add
+      </StyledAddButton>
     );
+  };
+
+  const HandleTools = () => {
+    return tools.length > 0 ? (
+      tools.map(({ id, title, description, tags, link }: CardToolsProperty) => (
+        <CardTool
+          key={id}
+          id={id}
+          show={setShowModal}
+          title={title}
+          description={description}
+          tags={tags}
+          modalInfos={{ setIdTool, setToolTitle }}
+          link={link}
+        />
+      ))
+    ) : (
+      <EmptyTools addModal={setAddShowModal} />
+    );
+  };
+
+  const HandleFilteredTools = () => {
+    return filteredTools.length > 0 ? (
+      filteredTools.map(
+        ({ id, title, description, tags, link }: CardToolsProperty) => (
+          <CardTool
+            key={id}
+            id={id}
+            show={setShowModal}
+            title={title}
+            description={description}
+            tags={tags}
+            modalInfos={{ setIdTool, setToolTitle }}
+            link={link}
+          />
+        )
+      )
+    ) : (
+      <EmptyFilteredTools />
+    );
+  };
+
+  const MainSection = () => {
+    return isSearching ? <HandleFilteredTools /> : <HandleTools />;
   };
 
   useEffect(() => {
@@ -72,6 +116,7 @@ const Home = () => {
       setTools(data.data);
     }
     getAllTools();
+    setIsLoading(false);
   }, []);
   return (
     <Container>
@@ -89,41 +134,7 @@ const Home = () => {
           <AddButton />
         </div>
       </div>
-      {tools.length < 1 ? (
-        <Loading />
-      ) : (
-        <>
-          {filteredTools.length > 0
-            ? filteredTools.map(
-                ({ id, title, description, tags, link }: CardToolsProperty) => (
-                  <CardTool
-                    key={id}
-                    id={id}
-                    show={setShowModal}
-                    title={title}
-                    description={description}
-                    tags={tags}
-                    modalInfos={{ setIdTool, setToolTitle }}
-                    link={link}
-                  />
-                )
-              )
-            : tools.map(
-                ({ id, title, description, tags, link }: CardToolsProperty) => (
-                  <CardTool
-                    key={id}
-                    id={id}
-                    show={setShowModal}
-                    title={title}
-                    description={description}
-                    tags={tags}
-                    modalInfos={{ setIdTool, setToolTitle }}
-                    link={link}
-                  />
-                )
-              )}
-        </>
-      )}
+      {isLoading ? <Loading /> : <MainSection />}
       {addShowModal && <AddModal show={setAddShowModal} />}
       {showModal && (
         <RemoveModal
