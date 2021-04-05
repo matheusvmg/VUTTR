@@ -11,6 +11,7 @@ interface ToolProperty {
     setIdTool: Function;
     setToolTitle: Function;
   };
+  link: string;
 }
 
 const CardTool: React.FC<ToolProperty> = ({
@@ -20,6 +21,7 @@ const CardTool: React.FC<ToolProperty> = ({
   description,
   tags,
   modalInfos,
+  link,
 }) => {
   const tagsFormatted = (tagsArray: Array<string>) => {
     const newTagsArrayFormatted = tagsArray.map((tag) => {
@@ -31,7 +33,7 @@ const CardTool: React.FC<ToolProperty> = ({
   return (
     <Container>
       <div className="header">
-        <a href="/details" target="_blank" id="title">
+        <a href={link} target="_blank" rel="noreferrer" id="title">
           {title}
         </a>
         <StyledRemoveButton
