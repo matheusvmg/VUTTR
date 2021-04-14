@@ -37,7 +37,6 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState<Boolean>(true);
   const inputTag = useRef<HTMLInputElement>(null);
   const [isSeachTagsChecked, setIsSeachTagsChecked] = useState<boolean>(false);
-  console.log(isSeachTagsChecked);
 
   async function searchTools() {
     async function generalSearch() {
@@ -134,6 +133,7 @@ const Home = () => {
     getAllTools();
     setIsLoading(false);
   }, []);
+
   return (
     <Container>
       <NavBar />
