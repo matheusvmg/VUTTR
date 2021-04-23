@@ -2,7 +2,11 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { Nav, NavLeftSide, NavRightSide, Badge } from "./styles";
 
-const NavBar = () => {
+interface NavBarProperty {
+  toolsCount: number;
+}
+
+const NavBar: React.FC<NavBarProperty> = ({ toolsCount }) => {
   return (
     <>
       <Nav>
@@ -26,7 +30,7 @@ const NavBar = () => {
           </ul>
         </NavLeftSide>
         <NavRightSide>
-          <Badge>1</Badge>
+          <Badge>{toolsCount}</Badge>
         </NavRightSide>
       </Nav>
     </>
