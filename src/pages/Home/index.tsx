@@ -37,6 +37,21 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState<Boolean>(true);
   const inputTag = useRef<HTMLInputElement>(null);
   const [isSeachTagsChecked, setIsSeachTagsChecked] = useState<boolean>(false);
+  const [toolsCount, setToolsCount] = useState<number>(0);
+
+  function persistToolsCount(toolsNumber: number) {
+    const toolsCountInfo = localStorage.getItem("toolsCount");
+    if (!toolsCountInfo) {
+      JSON.stringify(localStorage.setItem("toolsCount", String(toolsNumber)));
+      setToolsCount(Number(localStorage.getItem("toolsCount")));
+      return;
+    } else if (Number(toolsCountInfo) !== toolsNumber) {
+      JSON.stringify(localStorage.setItem("toolsCount", String(toolsNumber)));
+      setToolsCount(Number(localStorage.getItem("toolsCount")));
+      return;
+    }
+    setToolsCount(Number(toolsCountInfo));
+  }
 
   async function searchTools() {
     async function generalSearch() {
@@ -129,6 +144,7 @@ const Home = () => {
     async function getAllTools() {
       const data = await getTools();
       setTools(data.data);
+      persistToolsCount(data.data.length);
     }
     getAllTools();
     setIsLoading(false);
@@ -136,7 +152,7 @@ const Home = () => {
 
   return (
     <Container>
-      <NavBar />
+      <NavBar toolsCount={toolsCount} />
       <div className="wrapper">
         <TitleSubtitle {...titleProps} />
         <div className="section1">
