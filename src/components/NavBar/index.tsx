@@ -12,7 +12,7 @@ const NavBar: React.FC<NavBarProperty> = ({ toolsCount }) => {
       <Nav>
         <NavLeftSide>
           <ul>
-            <li>
+            {/* <li>
               <Link to="/">
                 <img
                   src="/images/icons/Icon-Chevron-Left-2px.svg"
@@ -20,7 +20,7 @@ const NavBar: React.FC<NavBarProperty> = ({ toolsCount }) => {
                   id="goback"
                 />
               </Link>
-            </li>
+            </li> */}
             <li>
               <Link to="/" style={{ marginLeft: "20px" }}>
                 <img src="/images/Logo Bossa.svg" alt="logo" id="logo" />
