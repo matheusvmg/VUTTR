@@ -29,12 +29,12 @@ const Home = () => {
   const { showModal, setShowModal } = useModal();
   const { showModal: addShowModal, setShowModal: setAddShowModal } = useModal();
   const [tools, setTools]: Array<any> = useState([]);
-  const [idTool, setIdTool]: any = useState(null);
-  const [toolTitle, setToolTitle]: any = useState("");
+  const [idTool, setIdTool] = useState<number>(0);
+  const [toolTitle, setToolTitle] = useState<string>("");
   const [filteredTools, setFilteredTools]: Array<any> = useState([]);
   const inputSearch = useRef<HTMLInputElement>(null);
-  const [isSearching, setIsSearching] = useState<Boolean>(false);
-  const [isLoading, setIsLoading] = useState<Boolean>(true);
+  const [isSearching, setIsSearching] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const inputTag = useRef<HTMLInputElement>(null);
   const [isSeachTagsChecked, setIsSeachTagsChecked] = useState<boolean>(false);
   const [toolsCount, setToolsCount] = useState<number>(0);
