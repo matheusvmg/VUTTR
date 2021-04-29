@@ -4,23 +4,26 @@ import { Nav, NavLeftSide, NavRightSide, Badge } from "./styles";
 
 interface NavBarProperty {
   toolsCount: number;
+  isDetails: boolean;
 }
 
-const NavBar: React.FC<NavBarProperty> = ({ toolsCount }) => {
+const NavBar: React.FC<NavBarProperty> = ({ toolsCount, isDetails }) => {
   return (
     <>
       <Nav>
         <NavLeftSide>
           <ul>
-            {/* <li>
-              <Link to="/">
-                <img
-                  src="/images/icons/Icon-Chevron-Left-2px.svg"
-                  alt="go back"
-                  id="goback"
-                />
-              </Link>
-            </li> */}
+            {isDetails && (
+              <li>
+                <Link to="/">
+                  <img
+                    src="/images/icons/Icon-Chevron-Left-2px.svg"
+                    alt="go back"
+                    id="goback"
+                  />
+                </Link>
+              </li>
+            )}
             <li>
               <Link to="/" style={{ marginLeft: "20px" }}>
                 <img src="/images/Logo Bossa.svg" alt="logo" id="logo" />

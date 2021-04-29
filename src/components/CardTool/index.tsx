@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, StyledRemoveButton, Description, Tags } from "./styles";
+import { Link } from "react-router-dom";
 
 interface ToolProperty {
   id: number;
@@ -33,9 +34,9 @@ const CardTool: React.FC<ToolProperty> = ({
   return (
     <Container>
       <div className="header">
-        <a href={link} target="_blank" rel="noreferrer" id="title">
+        <Link to={`/details/${id}`} id="title">
           {title}
-        </a>
+        </Link>
         <StyledRemoveButton
           type="button"
           onClick={() => {
