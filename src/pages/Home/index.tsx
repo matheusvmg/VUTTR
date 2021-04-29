@@ -12,6 +12,7 @@ import RemoveModal from "../../components/RemoveModal";
 import searchGlobally from "../../services/searchGlobally";
 import searchByTags from "../../services/searchByTags";
 import EmptyTools from "../../components/EmptyTools";
+import { useToolCount } from "../../hooks/useToolCount";
 
 interface CardToolsProperty {
   id: number;
@@ -28,6 +29,7 @@ const Home = () => {
   };
   const { showModal, setShowModal } = useModal();
   const { showModal: addShowModal, setShowModal: setAddShowModal } = useModal();
+  const { persistToolsCount, toolsCount } = useToolCount();
   const [tools, setTools]: Array<any> = useState([]);
   const [idTool, setIdTool] = useState<number>(0);
   const [toolTitle, setToolTitle] = useState<string>("");
@@ -37,21 +39,6 @@ const Home = () => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const inputTag = useRef<HTMLInputElement>(null);
   const [isSeachTagsChecked, setIsSeachTagsChecked] = useState<boolean>(false);
-  const [toolsCount, setToolsCount] = useState<number>(0);
-
-  function persistToolsCount(toolsNumber: number) {
-    const toolsCountInfo = localStorage.getItem("toolsCount");
-    if (!toolsCountInfo) {
-      JSON.stringify(localStorage.setItem("toolsCount", String(toolsNumber)));
-      setToolsCount(Number(localStorage.getItem("toolsCount")));
-      return;
-    } else if (Number(toolsCountInfo) !== toolsNumber) {
-      JSON.stringify(localStorage.setItem("toolsCount", String(toolsNumber)));
-      setToolsCount(Number(localStorage.getItem("toolsCount")));
-      return;
-    }
-    setToolsCount(Number(toolsCountInfo));
-  }
 
   async function searchTools() {
     async function generalSearch() {
@@ -144,15 +131,17 @@ const Home = () => {
     async function getAllTools() {
       const data = await getTools();
       setTools(data.data);
+      console.log(data.data);
       persistToolsCount(data.data.length);
     }
     getAllTools();
     setIsLoading(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <Container>
-      <NavBar toolsCount={toolsCount} />
+      <NavBar toolsCount={toolsCount} isDetails={false} />
       <div className="wrapper">
         <TitleSubtitle {...titleProps} />
         <div className="section1">
