@@ -52,7 +52,7 @@ export const Container = styled.div`
   }
 
   .section2 {
-    height: 350px;
+    height: fit-content;
     width: 40vw;
     background-color: ${colors.white};
     border: 1px solid ${colors.darkestWhite};
@@ -70,12 +70,6 @@ export const Container = styled.div`
     @media (max-width: 560px) {
       margin: 30px 0px;
       width: 85vw;
-    }
-    @media (max-width: 400px) {
-      height: 380px;
-    }
-    @media (max-width: 366px) {
-      height: 410px;
     }
   }
 `;
