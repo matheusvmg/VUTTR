@@ -77,7 +77,6 @@ const Home = () => {
     async function getAllTools() {
       const data = await getTools();
       setTools(data.data);
-      console.log(data.data);
       persistToolsCount(data.data.length);
     }
     getAllTools();
