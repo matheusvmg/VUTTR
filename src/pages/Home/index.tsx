@@ -2,25 +2,15 @@ import React, { useState, useEffect, useRef } from "react";
 import NavBar from "../../components/NavBar";
 import TitleSubtitle from "../../components/TitleSubtitle";
 import { Container, Search, Checkbox, StyledAddButton } from "./styles";
-import CardTool from "../../components/CardTool";
 import Loading from "../../components/Loading";
-import EmptyFilteredTools from "../../components/EmptyFilteredTools";
 import { useModal } from "../../hooks/useModal";
 import AddModal from "../../components/AddModal";
 import getTools from "../../services/getTools";
 import RemoveModal from "../../components/RemoveModal";
 import searchGlobally from "../../services/searchGlobally";
 import searchByTags from "../../services/searchByTags";
-import EmptyTools from "../../components/EmptyTools";
 import { useToolCount } from "../../hooks/useToolCount";
-
-interface CardToolsProperty {
-  id: number;
-  title: string;
-  description: string;
-  tags: [];
-  link: string;
-}
+import Pagination from "../../components/Pagination";
 
 const Home = () => {
   const titleProps = {
@@ -83,50 +73,6 @@ const Home = () => {
     );
   };
 
-  const HandleTools = () => {
-    return tools.length > 0 ? (
-      tools.map(({ id, title, description, tags, link }: CardToolsProperty) => (
-        <CardTool
-          key={id}
-          id={id}
-          show={setShowModal}
-          title={title}
-          description={description}
-          tags={tags}
-          modalInfos={{ setIdTool, setToolTitle }}
-          link={link}
-        />
-      ))
-    ) : (
-      <EmptyTools addModal={setAddShowModal} />
-    );
-  };
-
-  const HandleFilteredTools = () => {
-    return filteredTools.length > 0 ? (
-      filteredTools.map(
-        ({ id, title, description, tags, link }: CardToolsProperty) => (
-          <CardTool
-            key={id}
-            id={id}
-            show={setShowModal}
-            title={title}
-            description={description}
-            tags={tags}
-            modalInfos={{ setIdTool, setToolTitle }}
-            link={link}
-          />
-        )
-      )
-    ) : (
-      <EmptyFilteredTools />
-    );
-  };
-
-  const MainSection = () => {
-    return isSearching ? <HandleFilteredTools /> : <HandleTools />;
-  };
-
   useEffect(() => {
     async function getAllTools() {
       const data = await getTools();
@@ -160,7 +106,21 @@ const Home = () => {
           <AddButton />
         </div>
       </div>
-      {isLoading ? <Loading /> : <MainSection />}
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <Pagination
+          data={tools}
+          dataLimit={5}
+          pageLimit={3}
+          filteredTools={filteredTools}
+          isSearching={isSearching}
+          setIdTool={setIdTool}
+          setToolTitle={setToolTitle}
+          setShowModal={setShowModal}
+          setAddShowModal={setAddShowModal}
+        />
+      )}
       {addShowModal && <AddModal show={setAddShowModal} />}
       {showModal && (
         <RemoveModal
