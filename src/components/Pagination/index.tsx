@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { GlobalStyles } from "./styles";
 import CardTool from "../CardTool";
 import EmptyFilteredTools from "../../components/EmptyFilteredTools";
@@ -35,7 +35,7 @@ const Pagination: React.FC<PaginationProperty> = ({
   setShowModal,
   setAddShowModal,
 }) => {
-  const [pages] = useState<number>(Math.ceil(data.length / dataLimit));
+  const [pages, setPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const goToNextPage = () => {
     setCurrentPage((page) => page + 1);
@@ -117,6 +117,10 @@ const Pagination: React.FC<PaginationProperty> = ({
   const MainSection = () => {
     return isSearching ? <HandleFilteredTools /> : <HandleTools />;
   };
+
+  useEffect(() => {
+    setPages(Math.ceil(data.length / dataLimit));
+  }, [data.length, dataLimit]);
 
   return (
     <>
