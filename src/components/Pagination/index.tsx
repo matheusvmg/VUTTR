@@ -131,39 +131,42 @@ const Pagination: React.FC<PaginationProperty> = ({
         </div>
 
         <div className="pagination">
-          <button
-            onClick={goToPreviousPage}
-            className={`prev ${currentPage === 1 ? "disabled" : ""}`}
-          >
-            <img
-              src="/images/icons/Icon-Chevron-Left-light-blue-2px.svg"
-              alt="arrow-left"
-            />{" "}
-            <span>Anterior</span>
-          </button>
+          {data.length > 0 && (
+            <>
+              <button
+                onClick={goToPreviousPage}
+                className={`prev ${currentPage === 1 ? "disabled" : ""}`}
+              >
+                <img
+                  src="/images/icons/Icon-Chevron-Left-light-blue-2px.svg"
+                  alt="arrow-left"
+                />{" "}
+                <span>Anterior</span>
+              </button>
+              {getPaginationGroup().map((item, index) => (
+                <button
+                  key={index}
+                  onClick={changePage}
+                  className={`paginationItem ${
+                    currentPage === item ? "active" : null
+                  }`}
+                >
+                  <span>{item}</span>
+                </button>
+              ))}
 
-          {getPaginationGroup().map((item, index) => (
-            <button
-              key={index}
-              onClick={changePage}
-              className={`paginationItem ${
-                currentPage === item ? "active" : null
-              }`}
-            >
-              <span>{item}</span>
-            </button>
-          ))}
-
-          <button
-            onClick={goToNextPage}
-            className={`next ${currentPage === pages ? "disabled" : ""}`}
-          >
-            <span>Próximo</span>
-            <img
-              src="/images/icons/Icon-Chevron-Right-2px.svg"
-              alt="arrow-left"
-            />{" "}
-          </button>
+              <button
+                onClick={goToNextPage}
+                className={`next ${currentPage === pages ? "disabled" : ""}`}
+              >
+                <span>Próximo</span>
+                <img
+                  src="/images/icons/Icon-Chevron-Right-2px.svg"
+                  alt="arrow-left"
+                />{" "}
+              </button>
+            </>
+          )}
         </div>
       </div>
     </>
