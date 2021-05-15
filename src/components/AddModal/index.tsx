@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import { Background, Modal, StyledAddBtn } from "./styles";
 import addTool from "../../services/addTool";
 
@@ -11,9 +11,10 @@ const AddModal: React.FC<AddModalProperty> = ({ show }) => {
   const inputToolLink = useRef<HTMLInputElement>(null);
   const inputToolDescription = useRef<HTMLInputElement>(null);
   const inputToolTags = useRef<HTMLInputElement>(null);
+  const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
   const getFieldsValues = () => {
-    return {
+    const fieldsValues = {
       title:
         inputToolName.current !== null ? inputToolName.current.value : null,
       link: inputToolLink.current !== null ? inputToolLink.current.value : null,
@@ -27,6 +28,18 @@ const AddModal: React.FC<AddModalProperty> = ({ show }) => {
         .replace(/\s/g, "")
         .split(","),
     };
+
+    if (
+      !fieldsValues.title?.trim() ||
+      !fieldsValues.link?.trim() ||
+      !fieldsValues.description?.trim() ||
+      fieldsValues.tags.includes("")
+    ) {
+      setIsDisabled(true);
+      return fieldsValues;
+    }
+    setIsDisabled(false);
+    return fieldsValues;
   };
 
   async function AddOneTool() {
@@ -46,17 +59,27 @@ const AddModal: React.FC<AddModalProperty> = ({ show }) => {
           <span>+</span>
           <h4>Add tool</h4>
         </div>
-        <p className="labels">Tool Name</p>
-        <input type="text" ref={inputToolName} />
-        <p className="labels">Tool Link</p>
-        <input type="text" ref={inputToolLink} />
-        <p className="labels">Tool description</p>
-        <input type="text" ref={inputToolDescription} />
-        <p className="labels">Tags</p>
-        <input type="text" ref={inputToolTags} />
-        <StyledAddBtn type="button" onClick={() => AddOneTool()}>
-          Add tool
-        </StyledAddBtn>
+        <form className="add-form">
+          <p className="labels">Tool Name</p>
+          <input type="text" ref={inputToolName} onChange={getFieldsValues} />
+          <p className="labels">Tool Link</p>
+          <input type="text" ref={inputToolLink} onChange={getFieldsValues} />
+          <p className="labels">Tool description</p>
+          <input
+            type="text"
+            ref={inputToolDescription}
+            onChange={getFieldsValues}
+          />
+          <p className="labels">Tags</p>
+          <input type="text" ref={inputToolTags} onChange={getFieldsValues} />
+          <StyledAddBtn
+            disabled={isDisabled}
+            type="submit"
+            onClick={() => AddOneTool()}
+          >
+            Add tool
+          </StyledAddBtn>
+        </form>
       </Modal>
     </Background>
   );
