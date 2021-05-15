@@ -36,6 +36,7 @@ const Pagination: React.FC<PaginationProperty> = ({
   setAddShowModal,
 }) => {
   const [pages, setPages] = useState<number>(1);
+  const [filteredPages, setFilteredPages] = useState<number>(1);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const goToNextPage = () => {
     setCurrentPage((page) => page + 1);
@@ -56,9 +57,23 @@ const Pagination: React.FC<PaginationProperty> = ({
     return data.slice(startIndex, endIndex);
   };
 
+  const getFilteredPaginatedData = () => {
+    const startIndex = currentPage * dataLimit - dataLimit;
+    const endIndex = startIndex + dataLimit;
+    return filteredTools.slice(startIndex, endIndex);
+  };
+
   const getPaginationGroup = () => {
     let start = Math.floor((currentPage - 1) / pageLimit) * pageLimit;
     const numbersOfPages = Math.ceil(data.length / dataLimit);
+    return new Array(numbersOfPages)
+      .fill(numbersOfPages)
+      .map((_, idx) => start + idx + 1);
+  };
+
+  const getFilteredPaginationGroup = () => {
+    let start = Math.floor((currentPage - 1) / pageLimit) * pageLimit;
+    const numbersOfPages = Math.ceil(filteredTools.length / dataLimit);
     return new Array(numbersOfPages)
       .fill(numbersOfPages)
       .map((_, idx) => start + idx + 1);
@@ -93,7 +108,7 @@ const Pagination: React.FC<PaginationProperty> = ({
     return (
       <>
         {filteredTools.length > 0 ? (
-          filteredTools.map(
+          getFilteredPaginatedData().map(
             ({ id, title, description, tags, link }: CardToolsProperty) => (
               <CardTool
                 key={id}
@@ -118,9 +133,105 @@ const Pagination: React.FC<PaginationProperty> = ({
     return isSearching ? <HandleFilteredTools /> : <HandleTools />;
   };
 
+  const PaginationButtons = () => {
+    const ToolsPaginationButtons = () => {
+      return (
+        <>
+          <button
+            onClick={goToPreviousPage}
+            className={`prev ${currentPage === 1 ? "disabled" : ""}`}
+          >
+            <img
+              src="/images/icons/Icon-Chevron-Left-light-blue-2px.svg"
+              alt="arrow-left"
+            />{" "}
+            <span>Anterior</span>
+          </button>
+          {getPaginationGroup().map((item, index) => (
+            <button
+              key={index}
+              onClick={changePage}
+              className={`paginationItem ${
+                currentPage === item ? "active" : null
+              }`}
+            >
+              <span>{item}</span>
+            </button>
+          ))}
+
+          <button
+            onClick={goToNextPage}
+            className={`next ${currentPage === pages ? "disabled" : ""}`}
+          >
+            <span>Próximo</span>
+            <img
+              src="/images/icons/Icon-Chevron-Right-2px.svg"
+              alt="arrow-left"
+            />{" "}
+          </button>
+        </>
+      );
+    };
+
+    const FilteredToolsPaginationButtons = () => {
+      return (
+        <>
+          <button
+            onClick={goToPreviousPage}
+            className={`prev ${currentPage === 1 ? "disabled" : ""}`}
+          >
+            <img
+              src="/images/icons/Icon-Chevron-Left-light-blue-2px.svg"
+              alt="arrow-left"
+            />{" "}
+            <span>Anterior</span>
+          </button>
+          {getFilteredPaginationGroup().map((item, index) => (
+            <button
+              key={index}
+              onClick={changePage}
+              className={`paginationItem ${
+                currentPage === item ? "active" : null
+              }`}
+            >
+              <span>{item}</span>
+            </button>
+          ))}
+
+          <button
+            onClick={goToNextPage}
+            className={`next ${
+              currentPage === filteredPages ? "disabled" : ""
+            }`}
+          >
+            <span>Próximo</span>
+            <img
+              src="/images/icons/Icon-Chevron-Right-2px.svg"
+              alt="arrow-left"
+            />{" "}
+          </button>
+        </>
+      );
+    };
+
+    if (data.length > 0) {
+      if (filteredTools.length > 0 && isSearching) {
+        return <FilteredToolsPaginationButtons />;
+      }
+
+      if (filteredTools.length < 1 && isSearching) {
+        return <></>;
+      }
+      return <ToolsPaginationButtons />;
+    }
+
+    return <></>;
+  };
+
   useEffect(() => {
     setPages(Math.ceil(data.length / dataLimit));
-  }, [data.length, dataLimit]);
+    setFilteredPages(Math.ceil(filteredTools.length / dataLimit));
+  }, [data.length, dataLimit, filteredTools.length]);
 
   return (
     <>
@@ -131,42 +242,7 @@ const Pagination: React.FC<PaginationProperty> = ({
         </div>
 
         <div className="pagination">
-          {data.length > 0 && (
-            <>
-              <button
-                onClick={goToPreviousPage}
-                className={`prev ${currentPage === 1 ? "disabled" : ""}`}
-              >
-                <img
-                  src="/images/icons/Icon-Chevron-Left-light-blue-2px.svg"
-                  alt="arrow-left"
-                />{" "}
-                <span>Anterior</span>
-              </button>
-              {getPaginationGroup().map((item, index) => (
-                <button
-                  key={index}
-                  onClick={changePage}
-                  className={`paginationItem ${
-                    currentPage === item ? "active" : null
-                  }`}
-                >
-                  <span>{item}</span>
-                </button>
-              ))}
-
-              <button
-                onClick={goToNextPage}
-                className={`next ${currentPage === pages ? "disabled" : ""}`}
-              >
-                <span>Próximo</span>
-                <img
-                  src="/images/icons/Icon-Chevron-Right-2px.svg"
-                  alt="arrow-left"
-                />{" "}
-              </button>
-            </>
-          )}
+          <PaginationButtons />
         </div>
       </div>
     </>
