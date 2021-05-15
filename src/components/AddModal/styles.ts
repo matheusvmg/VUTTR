@@ -39,6 +39,12 @@ export const Modal = styled.div`
     }
   }
 
+  .add-form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
   .labels {
     color: ${colors.lightInk};
     font-size: 14px;
@@ -84,8 +90,14 @@ export const StyledAddBtn = styled.button`
   border-radius: 5px;
   font-weight: 700;
   color: ${colors.white};
-  cursor: pointer;
   margin-top: 5px;
+  cursor: pointer;
+
+  &:disabled {
+    pointer-events: none;
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
 
   @media (min-width: 768px) {
     width: 100px;
