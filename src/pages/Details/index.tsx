@@ -31,7 +31,7 @@ const Details = () => {
         <div className="section2">
           <Title>{title}</Title>
           <ToolLink href={link} target="_blank" rel="noreferrer">
-            Acesse sua ferramenta
+            Access your tool
           </ToolLink>
           <p>{description}</p>
         </div>
