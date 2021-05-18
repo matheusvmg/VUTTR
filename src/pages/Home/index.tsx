@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import NavBar from "../../components/NavBar";
 import TitleSubtitle from "../../components/TitleSubtitle";
 import { Container, Search, Checkbox, StyledAddButton } from "./styles";
@@ -30,40 +30,39 @@ const Home = () => {
   const inputTag = useRef<HTMLInputElement>(null);
   const [isSeachTagsChecked, setIsSeachTagsChecked] = useState<boolean>(false);
 
-  async function searchTools() {
-    async function generalSearch() {
-      const word =
-        inputSearch.current !== null ? inputSearch.current.value : null;
-      const response = await searchGlobally(word);
-      setFilteredTools(response.data);
-      setIsSearching(true);
-    }
+  const SearchInput = useCallback(() => {
+    async function searchTools() {
+      async function generalSearch() {
+        const word =
+          inputSearch.current !== null ? inputSearch.current.value : null;
+        const response = await searchGlobally(word);
+        setFilteredTools(response.data);
+        setIsSearching(true);
+      }
 
-    async function searchInTagsOnly() {
-      const tag =
-        inputSearch.current !== null ? inputSearch.current.value : null;
-      const response = await searchByTags(tag);
-      setFilteredTools(response.data);
-      setIsSearching(true);
-    }
+      async function searchInTagsOnly() {
+        const tag =
+          inputSearch.current !== null ? inputSearch.current.value : null;
+        const response = await searchByTags(tag);
+        setFilteredTools(response.data);
+        setIsSearching(true);
+      }
 
-    try {
-      isSeachTagsChecked ? searchInTagsOnly() : generalSearch();
-    } catch (err) {
-      console.error(err);
+      try {
+        isSeachTagsChecked ? searchInTagsOnly() : generalSearch();
+      } catch (err) {
+        console.error(err);
+      }
     }
-  }
-
-  const SearchInput = () => {
     return (
       <Search
         type="text"
         placeholder="search"
         ref={inputSearch}
-        onBlur={() => searchTools()}
+        onChange={() => searchTools()}
       />
     );
-  };
+  }, [isSeachTagsChecked]);
 
   const AddButton = () => {
     return (
