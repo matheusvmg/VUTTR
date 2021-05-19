@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Background, Modal, StyledAddBtn } from "./styles";
 import addTool from "../../services/addTool";
 
@@ -42,7 +42,8 @@ const AddModal: React.FC<AddModalProperty> = ({ show }) => {
     return fieldsValues;
   };
 
-  async function AddOneTool() {
+  async function AddOneTool(e: any) {
+    e.preventDefault();
     const data = getFieldsValues();
     try {
       await addTool(data);
@@ -52,6 +53,7 @@ const AddModal: React.FC<AddModalProperty> = ({ show }) => {
     }
   }
 
+  useEffect(() => console.log(getFieldsValues()), []);
   return (
     <Background onClick={() => show(false)}>
       <Modal onClick={(e) => e.stopPropagation()}>
@@ -75,7 +77,7 @@ const AddModal: React.FC<AddModalProperty> = ({ show }) => {
           <StyledAddBtn
             disabled={isDisabled}
             type="submit"
-            onClick={() => AddOneTool()}
+            onClick={(e) => AddOneTool(e)}
           >
             Add tool
           </StyledAddBtn>
