@@ -53,7 +53,6 @@ const AddModal: React.FC<AddModalProperty> = ({ show }) => {
     }
   }
 
-  useEffect(() => console.log(getFieldsValues()), []);
   return (
     <Background onClick={() => show(false)}>
       <Modal onClick={(e) => e.stopPropagation()}>
